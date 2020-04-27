@@ -106,7 +106,7 @@ function cp(source, dest, options = {}) {
             ? path.join(dest, path.basename(source))
             : dest;
         if (!(yield ioUtil.exists(source))) {
-            throw new Error(`no such file or directory: ${source}`);
+            throw new Error(`DEBUG0: no such file or directory: ${source}`);
         }
         const sourceStat = yield ioUtil.stat(source);
         if (sourceStat.isDirectory()) {
@@ -5208,6 +5208,7 @@ class GitAuthHelper {
             }
             if (configExists) {
                 core.info(`Copying '${gitConfigPath}' to '${newGitConfigPath}'`);
+                throw new Error(`DEBUG1: ${gitConfigPath} ${newGitConfigPath}`);
                 yield io.cp(gitConfigPath, newGitConfigPath);
             }
             else {
@@ -10108,6 +10109,7 @@ function cacheDir(sourceDir, tool, version, arch) {
         // due to anti-virus software having an open handle on a file.
         for (const itemName of fs.readdirSync(sourceDir)) {
             const s = path.join(sourceDir, itemName);
+            throw new Error(`DEBUG2: ${s} ${destPath}`);
             yield io.cp(s, destPath, { recursive: true });
         }
         // write .complete
@@ -10141,6 +10143,7 @@ function cacheFile(sourceFile, targetFile, tool, version, arch) {
         // anti-virus software having an open handle on a file.
         const destPath = path.join(destFolder, targetFile);
         core.debug(`destination file ${destPath}`);
+        throw new Error(`DEBUG3: ${sourceFile} ${destPath}`);
         yield io.cp(sourceFile, destPath);
         // write .complete
         _completeToolPath(tool, version, arch);
